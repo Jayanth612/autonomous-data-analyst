@@ -1,0 +1,19 @@
+# Python Virtual Environment (Fixed for your folder structure)
+backend/venv/
+
+# Python caching
+**/__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# React / Frontend
+node_modules/
+dist/
+
+# VS Code
+.vscode/
+
+# Uploads
+uploads/
