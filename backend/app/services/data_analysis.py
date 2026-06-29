@@ -1,13 +1,12 @@
-import app.services.data_loader as data_loader
+from app.services import data_loader
+from app.services.query_engine import sales_by_region, sales_by_product
 
-
-def analyze_sales():
+def analyze_question(question: str):
     if data_loader.df_global is None:
         return {
             "message": "No dataset uploaded."
         }
 
-    # Find the sales column
     sales_column = None
 
     for column in data_loader.df_global.columns:
@@ -20,9 +19,33 @@ def analyze_sales():
             "message": "Sales column not found."
         }
 
+    question = question.lower()
+
+    if "total" in question:
+        return {
+            "answer": float(data_loader.df_global[sales_column].sum())
+        }
+
+    elif "average" in question or "mean" in question:
+        return {
+            "answer": float(data_loader.df_global[sales_column].mean())
+        }
+
+    elif "maximum" in question or "highest" in question or "max" in question:
+        return {
+            "answer": float(data_loader.df_global[sales_column].max())
+        }
+
+    elif "minimum" in question or "lowest" in question or "min" in question:
+        return {
+            "answer": float(data_loader.df_global[sales_column].min())
+        }
+    
+    elif "region" in question:
+        return sales_by_region()
+    
+    elif "product" in question:
+        return sales_by_product()
     return {
-        "total_sales": float(data_loader.df_global[sales_column].sum()),
-        "average_sales": float(data_loader.df_global[sales_column].mean()),
-        "maximum_sales": float(data_loader.df_global[sales_column].max()),
-        "minimum_sales": float(data_loader.df_global[sales_column].min())
+        "message": "I don't understand that question yet."
     }

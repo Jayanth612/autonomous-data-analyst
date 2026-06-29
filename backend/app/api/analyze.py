@@ -1,9 +1,9 @@
 from fastapi import APIRouter
-from app.services.data_analysis import analyze_sales
+from app.models.query import QueryRequest
+from app.services.data_analysis import analyze_question
 
 router = APIRouter()
 
-
-@router.get("/analyze")
-def analyze():
-    return analyze_sales()
+@router.post("/query")
+def query(request: QueryRequest):
+    return analyze_question(request.question)
